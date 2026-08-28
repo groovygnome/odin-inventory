@@ -12,7 +12,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-    res.render('index', { inventory: inventory });
+    res.render('index', { inventory: inventoryDB });
 });
 app.use('/', mainRoute);
 app.use('/inventory', inventoryRoute);

@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>New Weapon Form</title>
+        <script src='./scripts/addOwners.js' async></script>
+    </head>
+
+    <body>
+        <form method='POST' action='/new'>
+            <p>Weapon Name: </p>
+            <input name='wName' type='text'>
+            <p>Source Series: </p>
+            <input name='series' type='text'>
+            <p>Ammo Type: </p>
+            <input name='ammo' type='text'>
+            <p>Owners:</p>
+            <div id='owners'>
+            </div>
+            <button type='button' id='add-owner'>Add Owner</button>
+            <button type='submit'>Submit</button>
+        </form>
+    </body>
+</html>

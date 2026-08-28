@@ -5,6 +5,15 @@
     </head>
     <body>
         <h1>The Arsenal</h1>
-        <p>Hi I'm gonna fill this out later</p>
+        <%- include('./partials/error.ejs') %>
+        <ul>
+            <% inventory.forEach((weapon) => { %>
+                <li>
+                    <%- include('./partials/weapon.ejs', (weapon: weapon)) %>
+                    <a href='./weapon/<%=weapon.id%>'>Open Message</a>
+                </li>
+        </ul>
+
+        <a href='/new'>Add a New Weapon</a>
     </body>
 </html>
