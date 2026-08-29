@@ -9,9 +9,10 @@
         <ul>
             <% inventory.forEach((weapon) => { %>
                 <li>
-                    <%- include('./partials/weapon.ejs', (weapon: weapon)) %>
-                    <a href='./weapon/<%=weapon.id%>'>Open Message</a>
+                    <%- include('./partials/weapon.ejs', {weapon: weapon}) %>
+                    <a href='./weapon/<%=weapon.id%>'>Weapon Details</a>
                 </li>
+            <% }); %>
         </ul>
 
         <a href='/new'>Add a New Weapon</a>

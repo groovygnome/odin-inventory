@@ -1,8 +1,8 @@
-import pool from './pool.js'
+const { pool } = require('./pool.js')
 
 async function getSomething(param) {
     const { rows } = await pool.query(`SELECT * from inventory WHERE $1`, [param]);
     return rows
 }
 
-export default { getSomething }
+module.exports = { getSomething }

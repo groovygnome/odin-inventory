@@ -1,8 +1,8 @@
-import db from '../storage/inventory';
+const db = require('../storage/inventory.js');
 
 async function getSomething(req, res) {
     const ans = await db.getSomething(req.params.something);
     res.json(ans);
 }
 
-export default { getSomething };
+module.exports = { getSomething };

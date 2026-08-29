@@ -1,8 +1,7 @@
 let express = require('express');
 let app = express();
 let path = require('node:path');
-const mainRoute = require('./routes/main');
-const inventoryRoute = require('./routes/inventory');
+const inventoryRoute = require('./routes/inventory.js');
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -11,10 +10,12 @@ const inventoryDB = require('./storage/inventory');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
-    res.render('index', { inventory: inventoryDB });
+console.log(inventoryDB);
+
+app.get('/', async (req, res) => {
+    let inv = await inventoryDB.getAllWeapons;
+    res.render('index', { inventory: inv });
 });
-app.use('/', mainRoute);
 app.use('/inventory', inventoryRoute);
 
 const PORT = 3000;
