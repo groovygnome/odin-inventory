@@ -1,8 +1,13 @@
-const { pool } = require('./pool.js')
+const pool = require('./pool.js')
 
 async function getSomething(param) {
     const { rows } = await pool.query(`SELECT * from inventory WHERE $1`, [param]);
     return rows
 }
 
-module.exports = { getSomething }
+async function getAllWeapons() {
+    const { rows } = await pool.query(`SELECT * from weapons`);
+    return rows;
+}
+
+module.exports = { getSomething, getAllWeapons }

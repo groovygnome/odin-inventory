@@ -13,8 +13,12 @@ app.set('view engine', 'ejs');
 console.log(inventoryDB);
 
 app.get('/', async (req, res) => {
-    let inv = await inventoryDB.getAllWeapons;
+    const inv = await inventoryDB.getAllWeapons();
+    console.log(inv);
     res.render('index', { inventory: inv });
+});
+app.get('/new', (req, res) => {
+    res.render('new');
 });
 app.use('/inventory', inventoryRoute);
 
