@@ -3,6 +3,6 @@ const router = express.Router();
 
 const controller = require('../controllers/inventoryController.js');
 
-router.get('/:something', controller.getSomething);
+router.post('/new', controller.postNew);
 
 module.exports = router;

@@ -1,8 +1,8 @@
 const db = require('../storage/inventory.js');
 
-async function getSomething(req, res) {
-    const ans = await db.getSomething(req.params.something);
-    res.json(ans);
+async function postNew(req, res) {
+    await db.postNew(req.body.wName, req.body.series, req.body.ammo, req.body.oName);
+    res.redirect('/');
 }
 
-module.exports = { getSomething };
+module.exports = { postNew };

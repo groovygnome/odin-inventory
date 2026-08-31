@@ -10,4 +10,19 @@ async function getAllWeapons() {
     return rows;
 }
 
-module.exports = { getSomething, getAllWeapons }
+async function postNew(wName, series, ammo, oNames) {
+    let result = await pool.query('INSERT INTO series (name) VALUES ($1) RETURNING id', [series]);
+    let id = result.rows[0].id;
+    result = await pool.query('INSERT INTO weapons (name, seriesid, ammotype) VALUES ($1, $2, $3) RETURNING id', [wName, id, ammo]);
+    id = result.rows[0].id;
+    const ownerIds = []
+    for (let name of oNames) {
+        result = await pool.query('INSERT INTO owner (name) VALUES ($1) RETURNING id', [name]);
+        ownerIds.push(result.rows[0].id);
+    }
+    for (let oid of ownerIds) {
+        await pool.query('INSERT INTO ownerhistory (weaponid, ownerid) VALUES ($1, $2)', [id, oid]);
+    }
+}
+
+module.exports = { getSomething, getAllWeapons, postNew }
