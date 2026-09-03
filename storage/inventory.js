@@ -6,7 +6,11 @@ async function getSomething(param) {
 }
 
 async function getAllWeapons() {
-    const { rows } = await pool.query(`SELECT * from weapons`);
+    const { rows } = await pool.query(`
+    SELECT weapons.id, weapons.name, weapons.ammotype, series.name AS seriesName, owner.name AS ownerName FROM weapons 
+        JOIN series ON weapons.seriesid = series.id 
+        JOIN ownerhistory ON weapons.id = ownerhistory.weaponid 
+        JOIN owner ON owner.id = ownerHistory.ownerid`);
     return rows;
 }
 

@@ -10,11 +10,17 @@ const inventoryDB = require('./storage/inventory');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-console.log(inventoryDB);
 
 app.get('/', async (req, res) => {
-    const inv = await inventoryDB.getAllWeapons();
-    console.log(inv);
+    const invRes = await inventoryDB.getAllWeapons();
+    let invMap = {};
+    for (let weapon of invRes) {
+        if (!invMap[weapon.id]) invMap[weapon.id] = { name: weapon.name, ammoType: weapon.ammotype, series: weapon.seriesname, owners: [weapon.ownername] };
+        else {
+            invMap[weapon.id].owners.push(weapon.ownername);
+        }
+    }
+    let inv = Object.values(invMap);
     res.render('index', { inventory: inv });
 });
 app.get('/new', (req, res) => {
