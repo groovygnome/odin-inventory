@@ -1,1 +1,8 @@
-
+<p><%= weapon.name %></p>
+<p><%= weapon.ammoType %></p>
+<p><%= weapon.series %></p>
+<ul>
+<% weapon.owners.forEach(owner => { %>
+    <li><%= owner %></li>
+<% }); %>
+</ul>
