@@ -15,7 +15,7 @@ app.get('/', async (req, res) => {
     const invRes = await inventoryDB.getAllWeapons();
     let invMap = {};
     for (let weapon of invRes) {
-        if (!invMap[weapon.id]) invMap[weapon.id] = { name: weapon.name, ammoType: weapon.ammotype, series: weapon.seriesname, owners: [weapon.ownername] };
+        if (!invMap[weapon.id]) invMap[weapon.id] = { id: weapon.id, name: weapon.name, ammoType: weapon.ammotype, series: weapon.seriesname, owners: [weapon.ownername] };
         else {
             invMap[weapon.id].owners.push(weapon.ownername);
         }

@@ -15,6 +15,7 @@ async function getAllWeapons() {
 }
 
 async function postNew(wName, series, ammo, oNames) {
+    if (!Array.isArray(oNames)) oNames = [oNames]
     let result = await pool.query('INSERT INTO series (name) VALUES ($1) RETURNING id', [series]);
     let id = result.rows[0].id;
     result = await pool.query('INSERT INTO weapons (name, seriesid, ammotype) VALUES ($1, $2, $3) RETURNING id', [wName, id, ammo]);
@@ -29,4 +30,21 @@ async function postNew(wName, series, ammo, oNames) {
     }
 }
 
-module.exports = { getSomething, getAllWeapons, postNew }
+async function deleteWeapon(wId) {
+    let result = await pool.query('DELETE FROM ownerhistory WHERE weaponid = ($1) RETURNING ownerid', [wId]);
+
+    const remoIds = result.rows.map(row => row.ownerid);
+    result = await pool.query('SELECT ownerid FROM ownerhistory');
+    const currIds = result.rows.map(row => row.ownerid);
+    for (let remoid of remoIds) {
+        if (!currIds.includes(remoid)) {
+            await pool.query('DELETE FROM owner WHERE id = ($1)', [remoid]);
+        }
+    }
+
+    result = await pool.query('DELETE FROM weapons WHERE id = ($1) RETURNING seriesid', [wId]);
+    const seriesid = result.rows[0].seriesid;
+    await pool.query('DELETE FROM series WHERE id = ($1)', [seriesid]);
+}
+
+module.exports = { getSomething, getAllWeapons, postNew, deleteWeapon }

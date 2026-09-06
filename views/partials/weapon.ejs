@@ -6,3 +6,7 @@
     <li><%= owner %></li>
 <% }); %>
 </ul>
+<a href='./inventory/weapon/<%=weapon.id%>'>Weapon Details</a>
+<form method='POST' action='/inventory/delete/<%=weapon.id%>'>
+    <button type='submit'>Delete <%=weapon.name %></button>
+</form>
