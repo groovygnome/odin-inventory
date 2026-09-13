@@ -16,8 +16,16 @@ async function getAllWeapons() {
 
 async function postNew(wName, series, ammo, oNames) {
     if (!Array.isArray(oNames)) oNames = [oNames]
-    let result = await pool.query('INSERT INTO series (name) VALUES ($1) RETURNING id', [series]);
-    let id = result.rows[0].id;
+    let check = await pool.query('SELECT * FROM series WHERE name = ($1)', [series]);
+    let id;
+    let result;
+    console.log(check.rows);
+    if (check.rows.length === 0) {
+        let result = await pool.query('INSERT INTO series (name) VALUES ($1) RETURNING id', [series]);
+        id = result.rows[0].id;
+    } else {
+        id = check.rows[0].id;
+    }
     result = await pool.query('INSERT INTO weapons (name, seriesid, ammotype) VALUES ($1, $2, $3) RETURNING id', [wName, id, ammo]);
     id = result.rows[0].id;
     const ownerIds = []

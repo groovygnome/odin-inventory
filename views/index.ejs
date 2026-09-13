@@ -5,6 +5,12 @@
     </head>
     <body>
         <h1>The Arsenal</h1>
+        <select name='series' id='series'>
+            <option value=''>Filter to series...</option>
+            <% inventory.forEach((weapon) => { %>
+                <option value=<%= weapon.series %>><%= weapon.series %></option>
+            <% }); %>
+        </select>
         <%- include('./partials/error.ejs') %>
         <ul>
             <% inventory.forEach((weapon) => { %>
