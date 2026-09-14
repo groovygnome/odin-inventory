@@ -1,8 +1,22 @@
 const pool = require('./pool.js')
 
-async function getSomething(param) {
-    const { rows } = await pool.query(`SELECT * from inventory WHERE $1`, [param]);
-    return rows
+async function getWeapon(weaponId) {
+    const { rows } = await pool.query(`SELECT weapons.id, weapons.name, weapons.ammotype, series.name AS seriesName, owner.name AS ownerName FROM weapons 
+        JOIN series ON weapons.seriesid = series.id 
+        JOIN ownerhistory ON weapons.id = ownerhistory.weaponid 
+        JOIN owner ON owner.id = ownerHistory.ownerid
+    WHERE weapons.id = ($1)`, [weaponId]);
+    return rows;
+}
+
+async function getSeries(seriesName) {
+    const rows = await pool.query(`SELECT weapons.id, weapons.name, weapons.ammotype, series.name AS seriesName, owner.name AS ownerName FROM weapons 
+        JOIN series ON weapons.seriesid = series.id 
+        JOIN ownerhistory ON weapons.id = ownerhistory.weaponid 
+        JOIN owner ON owner.id = ownerHistory.ownerid
+    WHERE series.name = ($1)`, [seriesName]);
+    return rows;
+
 }
 
 async function getAllWeapons() {
@@ -55,4 +69,4 @@ async function deleteWeapon(wId) {
     await pool.query('DELETE FROM series WHERE id = ($1)', [seriesid]);
 }
 
-module.exports = { getSomething, getAllWeapons, postNew, deleteWeapon }
+module.exports = { getWeapon, getSeries, getAllWeapons, postNew, deleteWeapon }

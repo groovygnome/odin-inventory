@@ -5,12 +5,14 @@
     </head>
     <body>
         <h1>The Arsenal</h1>
-        <select name='series' id='series'>
-            <option value=''>Filter to series...</option>
+        <ul>
+            <% let seriesSet = new Set() %>
             <% inventory.forEach((weapon) => { %>
-                <option value=<%= weapon.series %>><%= weapon.series %></option>
-            <% }); %>
-        </select>
+                <% if(!seriesSet.has(weapon.series)){ %>
+                    <li><a href='/inventory/series/<%= weapon.series %>'><%= weapon.series %></a></li>
+                    <% seriesSet.add(weapon.series) %>
+            <% }}); %>
+        </ul>
         <%- include('./partials/error.ejs') %>
         <ul>
             <% inventory.forEach((weapon) => { %>

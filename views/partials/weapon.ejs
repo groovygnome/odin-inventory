@@ -2,11 +2,11 @@
 <p><%= weapon.ammoType %></p>
 <p><%= weapon.series %></p>
 <ul>
-<% weapon.owners.forEach(owner => { %>
+<% if(weapon.owners) weapon.owners.forEach(owner => { %>
     <li><%= owner %></li>
 <% }); %>
 </ul>
 <a href='./inventory/weapon/<%=weapon.id%>'>Weapon Details</a>
-<form method='POST' action='/inventory/delete/<%=weapon.id%>'>
+<form method='DELETE' action='/inventory/delete/<%=weapon.id%>'>
     <button type='submit'>Delete <%=weapon.name %></button>
 </form>

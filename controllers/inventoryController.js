@@ -8,8 +8,21 @@ async function postNew(req, res) {
 }
 
 async function getWeapon(req, res) {
-    const weapon = await db.getWeapon(req.body.weaponId);
-    res.redirect('detail', { weapon: weapon });
+    const weapons = await db.getWeapon(req.params.weaponId);
+    let weapon = {};
+    for (let wp of weapons) {
+        if (!weapon.id) weapon = { id: wp.id, name: wp.name, ammoType: wp.ammotype, series: wp.seriesname, owners: [wp.ownername] };
+        else {
+            weapon.owners.push(wp.ownername);
+        }
+    }
+    console.log(weapon);
+    res.render('detail', { weapon: weapon });
+}
+
+async function getSeries(req, res) {
+    const series = await db.getSeries(req.params.seriesName);
+    res.render('series', { series: series });
 }
 
 async function deleteWeapon(req, res) {
@@ -22,4 +35,4 @@ async function deleteWeapon(req, res) {
     }
 }
 
-module.exports = { postNew, getWeapon, deleteWeapon };
+module.exports = { postNew, getWeapon, deleteWeapon, getSeries };

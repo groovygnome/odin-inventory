@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Arsenal</title>
+    </head>
+    <body>
+        <h1>The Arsenal</h1>
+        <h2><%= weapon.name %></h2>
+        <%- include('./partials/error.ejs') %>
+        <p><%= weapon.ammoType %></p>
+        <p><%= weapon.series %></p>
+        <ul>
+            <% if(weapon.owners) weapon.owners.forEach(owner => { %>
+                <li><%= owner %></li>
+            <% }); %>
+        </ul>
+
+        <a href='/'>Return Home</a>
+    </body>
+</html>
