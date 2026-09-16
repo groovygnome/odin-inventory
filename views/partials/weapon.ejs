@@ -7,6 +7,31 @@
 <% }); %>
 </ul>
 <a href='./inventory/weapon/<%=weapon.id%>'>Weapon Details</a>
-<form method='DELETE' action='/inventory/delete/<%=weapon.id%>'>
-    <button type='submit'>Delete <%=weapon.name %></button>
+<form id="delete<%=weapon.id %>" method='POST' action='/inventory/delete/<%=weapon.id%>'>
+    <button id="delete<%=weapon.id %>Btn">Delete <%=weapon.name %></button>
 </form>
+
+<script>
+        const dlt = document.querySelector('#delete<%=weapon.id%>');
+        const deleteBtn = document.querySelector('#delete<%=weapon.id%>Btn');
+
+        deleteBtn.addEventListener('click', () => {
+            event.preventDefault();
+            deleteBtn.remove();
+            const pwd = document.createElement('div');
+
+            pwd.classList.add('pwd');
+
+
+            pwd.innerHTML = `
+                <p>Delete password: </p>
+                <input name='pwd' type='text'>
+                <button type='submit' id='delete<%= weapon.id %>Submit'>Submit</button>
+            `;
+
+            dlt.appendChild(pwd);
+
+        });
+</script>
+
+

@@ -26,12 +26,12 @@ async function getSeries(req, res) {
 }
 
 async function deleteWeapon(req, res) {
-    let attempt = process.env.DELETE_PASS;
+    let attempt = req.body.pwd;
     if (attempt === pass) {
         await db.deleteWeapon(req.params.weaponId);
         res.redirect('/');
     } else {
-        //alert('Incorrect password');
+        res.redirect('/');
     }
 }
 
