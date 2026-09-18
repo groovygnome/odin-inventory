@@ -35,4 +35,14 @@ async function deleteWeapon(req, res) {
     }
 }
 
-module.exports = { postNew, getWeapon, deleteWeapon, getSeries };
+async function deleteSeries(req, res) {
+    let attempt = req.body.pwd;
+    if (attempt === pass) {
+        await db.deleteSeries(req.params.seriesId);
+        res.redirect('/');
+    } else {
+        res.redirect('/');
+    }
+}
+
+module.exports = { postNew, getWeapon, deleteWeapon, getSeries, deleteSeries };

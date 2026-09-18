@@ -33,7 +33,6 @@ async function postNew(wName, series, ammo, oNames) {
     let check = await pool.query('SELECT * FROM series WHERE name = ($1)', [series]);
     let id;
     let result;
-    console.log(check.rows);
     if (check.rows.length === 0) {
         let result = await pool.query('INSERT INTO series (name) VALUES ($1) RETURNING id', [series]);
         id = result.rows[0].id;
@@ -67,6 +66,10 @@ async function deleteWeapon(wId) {
     result = await pool.query('DELETE FROM weapons WHERE id = ($1) RETURNING seriesid', [wId]);
     const seriesid = result.rows[0].seriesid;
     await pool.query('DELETE FROM series WHERE id = ($1)', [seriesid]);
+}
+
+async function deleteSeries(sId) {
+
 }
 
 module.exports = { getWeapon, getSeries, getAllWeapons, postNew, deleteWeapon }
