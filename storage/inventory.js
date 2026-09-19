@@ -19,13 +19,23 @@ async function getSeries(seriesName) {
 
 }
 
-async function getAllWeapons() {
-    const { rows } = await pool.query(`
-    SELECT weapons.id, weapons.name, weapons.ammotype, series.name AS seriesName, owner.name AS ownerName FROM weapons 
+async function getWeapons(filter = '') {
+    if (filter === '') {
+        const { rows } = await pool.query(`
+    SELECT weapons.id, weapons.name, weapons.ammotype, series.name AS seriesName, owner.name AS ownerName, series.id AS seriesId FROM weapons 
         JOIN series ON weapons.seriesid = series.id 
         JOIN ownerhistory ON weapons.id = ownerhistory.weaponid 
         JOIN owner ON owner.id = ownerHistory.ownerid`);
-    return rows;
+        return rows;
+    } else {
+        const { rows } = await pool.query(`
+    SELECT weapons.id, weapons.name, weapons.ammotype, series.name AS seriesName, owner.name AS ownerName, series.id AS seriesId FROM weapons
+        WHERE series.id = ($1)
+        JOIN series ON weapons.seriesid = series.id 
+        JOIN ownerhistory ON weapons.id = ownerhistory.weaponid 
+        JOIN owner ON owner.id = ownerHistory.ownerid`, [filter]);
+        return rows;
+    }
 }
 
 async function postNew(wName, series, ammo, oNames) {
@@ -65,11 +75,16 @@ async function deleteWeapon(wId) {
 
     result = await pool.query('DELETE FROM weapons WHERE id = ($1) RETURNING seriesid', [wId]);
     const seriesid = result.rows[0].seriesid;
-    await pool.query('DELETE FROM series WHERE id = ($1)', [seriesid]);
+    const seriesCheck = await pool.query('SELECT * FROM weapons WHERE seriesId = ($1)', [seriesId]);
+    if (seriesCheck.rows.length === 0) {
+        await pool.query('DELETE FROM series WHERE id = ($1)', [seriesid]);
+    }
 }
 
 async function deleteSeries(sId) {
+    let result = await pool.query('SELECT * FROM weapons WHERE seriesid = ($1)', [sId]);
 
+    console.log(result.rows);
 }
 
-module.exports = { getWeapon, getSeries, getAllWeapons, postNew, deleteWeapon }
+module.exports = { getWeapon, getSeries, getWeapons, postNew, deleteWeapon, deleteSeries }

@@ -12,7 +12,8 @@ app.set('view engine', 'ejs');
 
 
 app.get('/', async (req, res) => {
-    const invRes = await inventoryDB.getAllWeapons();
+    //fetch list of all series to use for filter dropdown
+    const invRes = await inventoryDB.getWeapons();
     let invMap = {};
     for (let weapon of invRes) {
         if (!invMap[weapon.id]) invMap[weapon.id] = { id: weapon.id, name: weapon.name, ammoType: weapon.ammotype, series: weapon.seriesname, owners: [weapon.ownername] };
